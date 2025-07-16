@@ -16,6 +16,8 @@ import { styled } from "@mui/material/styles";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { SignUpInputs } from "@/libs/types/auth.type";
+import authApi from "@/libs/apis/auth.api";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -59,12 +61,6 @@ const SignUpContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
-type SignUpInputs = {
-  name: string;
-  email: string;
-  password: string;
-};
-
 const schema = yup.object({
   name: yup.string().required(),
   email: yup.string().email().required(),
@@ -80,7 +76,10 @@ export default function SignUp() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit: SubmitHandler<SignUpInputs> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<SignUpInputs> = async (data) => {
+    const res = await authApi.signUp(data);
+    console.log(res);
+  };
 
   return (
     <>

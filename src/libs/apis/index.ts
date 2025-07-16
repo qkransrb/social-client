@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosClient = axios.create({
-  baseURL: "",
+  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
 });
 
 axiosClient.interceptors.request.use(

@@ -1,8 +1,9 @@
 import axiosClient from ".";
+import { SignUpInputs } from "../types/auth.type";
 
 const authApi = {
-  signIn(data: any) {
-    return axiosClient.post("/sign-in", data);
+  signUp(data: SignUpInputs) {
+    return axiosClient.post("/auth/sign-up", data);
   },
 };
 

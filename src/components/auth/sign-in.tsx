@@ -21,6 +21,8 @@ import authApi from "@/libs/apis/auth.api";
 import { useAppDispatch } from "@/libs/redux/hook";
 import { setUser } from "@/libs/redux/user/userSlice";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import { AxiosError } from "axios";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -82,17 +84,31 @@ export default function SignIn() {
   const dispatch = useAppDispatch();
 
   const onSubmit: SubmitHandler<SignInInputs> = async (data) => {
-    const res = await authApi.signIn(data);
+    try {
+      const res = await authApi.signIn(data);
 
-    // Store user credentials to redux and local storage
-    dispatch(
-      setUser({
-        user: res.data.data,
-        accessToken: res.data.accessToken,
-      })
-    );
+      // Store user credentials to redux and local storage
+      dispatch(
+        setUser({
+          user: res.data.data,
+          accessToken: res.data.accessToken,
+        })
+      );
 
-    router.push("/");
+      toast.success("Login successfully!");
+      router.push("/");
+    } catch (error) {
+      console.log(error);
+      if (error instanceof AxiosError) {
+        toast.error(
+          error.response?.data.message
+            ? error.response?.data.message
+            : error.message
+        );
+      } else {
+        toast.error("Something went wrong...");
+      }
+    }
   };
 
   return (

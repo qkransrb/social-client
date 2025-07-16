@@ -3,7 +3,7 @@ import { SignUpInputs } from "../types/auth.type";
 
 const authApi = {
   signUp(data: SignUpInputs) {
-    return axiosClient.post("/auth/sign-up", data);
+    return axiosClient.post<IAuthResponse>("/auth/sign-up", data);
   },
 };
 

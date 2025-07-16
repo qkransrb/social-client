@@ -18,6 +18,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { SignUpInputs } from "@/libs/types/auth.type";
 import authApi from "@/libs/apis/auth.api";
+import { useAppDispatch } from "@/libs/redux/hook";
+import { setUser } from "@/libs/redux/user/userSlice";
+import { useRouter } from "next/navigation";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -76,9 +79,21 @@ export default function SignUp() {
     resolver: yupResolver(schema),
   });
 
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+
   const onSubmit: SubmitHandler<SignUpInputs> = async (data) => {
     const res = await authApi.signUp(data);
-    console.log(res);
+
+    // Store user credentials to redux and local storage
+    dispatch(
+      setUser({
+        user: res.data.data,
+        accessToken: res.data.accessToken,
+      })
+    );
+
+    router.push("/");
   };
 
   return (

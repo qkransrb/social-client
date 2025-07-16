@@ -6,6 +6,7 @@ import { Box } from "@mui/material";
 
 import theme from "@/theme";
 import ReduxProvider from "@/libs/redux/redux-provider";
+import ReactQueryProvider from "@/libs/tanstack/react-query-provider";
 import Header from "@/components/common/header";
 import LeftSidebar from "@/components/common/left-sidebar";
 import RightSidebar from "@/components/common/right-sidebar";
@@ -36,24 +37,30 @@ export default function RootLayout({
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
             <ReduxProvider>
-              <Box
-                sx={{ display: "flex", bgcolor: "#f0f2f5", minHeight: "100vh" }}
-              >
-                <Header />
-                <LeftSidebar />
+              <ReactQueryProvider>
                 <Box
-                  component="main"
                   sx={{
-                    flexGrow: 1,
-                    p: 3,
-                    width: { sm: `calc(100% - 480px)` },
-                    mt: 8,
+                    display: "flex",
+                    bgcolor: "#f0f2f5",
+                    minHeight: "100vh",
                   }}
                 >
-                  {children}
+                  <Header />
+                  <LeftSidebar />
+                  <Box
+                    component="main"
+                    sx={{
+                      flexGrow: 1,
+                      p: 3,
+                      width: { sm: `calc(100% - 480px)` },
+                      mt: 8,
+                    }}
+                  >
+                    {children}
+                  </Box>
+                  <RightSidebar />
                 </Box>
-                <RightSidebar />
-              </Box>
+              </ReactQueryProvider>
             </ReduxProvider>
           </ThemeProvider>
         </AppRouterCacheProvider>

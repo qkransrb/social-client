@@ -1,5 +1,3 @@
-"use client";
-
 import { MoreVert, FavoriteBorder, Chat } from "@mui/icons-material";
 import {
   Avatar,

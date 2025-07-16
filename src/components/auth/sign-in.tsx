@@ -16,7 +16,7 @@ import { styled } from "@mui/material/styles";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { SignUpInputs } from "@/libs/types/auth.type";
+import { SignInInputs } from "@/libs/types/auth.type";
 import authApi from "@/libs/apis/auth.api";
 import { useAppDispatch } from "@/libs/redux/hook";
 import { setUser } from "@/libs/redux/user/userSlice";
@@ -65,25 +65,24 @@ const SignUpContainer = styled(Stack)(({ theme }) => ({
 }));
 
 const schema = yup.object({
-  name: yup.string().required(),
   email: yup.string().email().required(),
   password: yup.string().required(),
 });
 
-export default function SignUp() {
+export default function SignIn() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignUpInputs>({
+  } = useForm<SignInInputs>({
     resolver: yupResolver(schema),
   });
 
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  const onSubmit: SubmitHandler<SignUpInputs> = async (data) => {
-    const res = await authApi.signUp(data);
+  const onSubmit: SubmitHandler<SignInInputs> = async (data) => {
+    const res = await authApi.signIn(data);
 
     // Store user credentials to redux and local storage
     dispatch(
@@ -106,25 +105,13 @@ export default function SignUp() {
             variant="h4"
             sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
           >
-            Sign up
+            Sign in
           </Typography>
           <Box
             component="form"
             sx={{ display: "flex", flexDirection: "column", gap: 2 }}
             onSubmit={handleSubmit(onSubmit)}
           >
-            <FormControl>
-              <FormLabel htmlFor="name">Full name</FormLabel>
-              <TextField
-                autoComplete="name"
-                fullWidth
-                id="name"
-                placeholder="John Doe"
-                {...register("name")}
-                error={!!errors.name}
-                helperText={errors.name?.message}
-              />
-            </FormControl>
             <FormControl>
               <FormLabel htmlFor="email">Email</FormLabel>
               <TextField
@@ -153,7 +140,7 @@ export default function SignUp() {
               />
             </FormControl>
             <Button type="submit" fullWidth variant="contained">
-              Sign up
+              Sign in
             </Button>
           </Box>
           <Divider>
@@ -161,13 +148,13 @@ export default function SignUp() {
           </Divider>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
             <Typography sx={{ textAlign: "center" }}>
-              Already have an account?{" "}
+              Don&apos;t have an account?{" "}
               <Link
-                href="/sign-in"
+                href="/sign-up"
                 variant="body2"
                 sx={{ alignSelf: "center" }}
               >
-                Sign in
+                Sign up
               </Link>
             </Typography>
           </Box>

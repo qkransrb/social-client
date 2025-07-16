@@ -5,6 +5,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { Box } from "@mui/material";
 
 import theme from "@/theme";
+import ReduxProvider from "@/libs/redux/redux-provider";
 import Header from "@/components/common/header";
 import LeftSidebar from "@/components/common/left-sidebar";
 import RightSidebar from "@/components/common/right-sidebar";
@@ -34,24 +35,26 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
-            <Box
-              sx={{ display: "flex", bgcolor: "#f0f2f5", minHeight: "100vh" }}
-            >
-              <Header />
-              <LeftSidebar />
+            <ReduxProvider>
               <Box
-                component="main"
-                sx={{
-                  flexGrow: 1,
-                  p: 3,
-                  width: { sm: `calc(100% - 480px)` },
-                  mt: 8,
-                }}
+                sx={{ display: "flex", bgcolor: "#f0f2f5", minHeight: "100vh" }}
               >
-                {children}
+                <Header />
+                <LeftSidebar />
+                <Box
+                  component="main"
+                  sx={{
+                    flexGrow: 1,
+                    p: 3,
+                    width: { sm: `calc(100% - 480px)` },
+                    mt: 8,
+                  }}
+                >
+                  {children}
+                </Box>
+                <RightSidebar />
               </Box>
-              <RightSidebar />
-            </Box>
+            </ReduxProvider>
           </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
